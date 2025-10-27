@@ -42,8 +42,8 @@ export default function AdminLogin() {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Update admin context
-      login(data.data.admin);
+      // Update admin context with accessToken
+      login(data.data.accessToken);
 
       // Redirect to home or dashboard
       navigate('/');
