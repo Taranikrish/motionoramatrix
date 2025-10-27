@@ -30,7 +30,7 @@ const uploadOnCloudinary = async (localFilePath) => {
       secure: true, // Force HTTPS URLs
     });
 
-    console.log("Cloudinary upload response:", response);
+    
 
     // Ensure the URL is HTTPS
     if (response.secure_url) {
