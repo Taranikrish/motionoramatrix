@@ -75,8 +75,25 @@ export default function ReelCarousel() {
       </div>
     );
 
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % videos.length);
+  };
+
   return (
-    <div className="flex justify-center items-center h-96 bg-jet-black">
+    <div className="flex justify-center items-center h-96 bg-jet-black relative">
+      {/* Left Arrow */}
+      <button
+        onClick={goToPrevious}
+        className="absolute left-4 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors duration-200"
+        aria-label="Previous reel"
+      >
+        ‹
+      </button>
+
       <div
         className="relative w-64 h-64 md:w-80 md:h-80"
         style={{
@@ -120,6 +137,15 @@ export default function ReelCarousel() {
           })}
         </div>
       </div>
+
+      {/* Right Arrow */}
+      <button
+        onClick={goToNext}
+        className="absolute right-4 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors duration-200"
+        aria-label="Next reel"
+      >
+        ›
+      </button>
     </div>
   );
 }

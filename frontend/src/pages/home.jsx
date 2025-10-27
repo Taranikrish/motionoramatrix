@@ -53,7 +53,7 @@ export default function Home() {
           </h2>
           <VideoCase/>
           <div
-            className="absolute bottom-4 right-0 transform -translate-x-1/2 text-white text-lg cursor-pointer hover:text-gray-300 transition-colors"
+            className="absolute bottom-2 right-0 transform -translate-x-1/2 text-black bg-white p-1 md:p-1.5 rounded-2xl text-sm md:text-lg cursor-pointer hover:text-gray-300 transition-colors"
             style={{ textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.8)'}}
             onClick={() => handleSeeMore('videos')}
           >
@@ -67,7 +67,7 @@ export default function Home() {
           </h2>
           <ReelCarousel/>
           <div
-            className="absolute bottom-4 right-0 transform -translate-x-1/2 text-white text-lg cursor-pointer hover:text-gray-300 transition-colors"
+            className="absolute -bottom-8 md:bottom-0 right-0 transform -translate-x-1/2 text-black bg-white p-1 md:p-1.5 rounded-2xl text-sm md:text-lg cursor-pointer hover:text-gray-300 transition-colors"
             style={{ textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6)' }}
             onClick={() => handleSeeMore('reels')}
           >
