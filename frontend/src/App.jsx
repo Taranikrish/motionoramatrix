@@ -5,6 +5,7 @@ import About from './pages/about.jsx'
 import Services from './pages/Services.jsx'
 import Contact from './pages/contact.jsx'
 import SeeMore from './pages/SeeMore.jsx'
+import SeeMoreLogos from './pages/SeeMoreLogos.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import AddVideo from './pages/AddVideo.jsx'
@@ -21,6 +22,7 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/see-more/:type" element={<SeeMore />} />
+          <Route path="/see-more/logos" element={<ProtectedRoute><SeeMoreLogos /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/add-video" element={<ProtectedRoute><AddVideo /></ProtectedRoute>} />

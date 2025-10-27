@@ -13,27 +13,40 @@ export default function Dashboard() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchVideoCount = async () => {
+    const fetchCounts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/`, {
+        // Fetch video count
+        const videoResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/`, {
           credentials: 'include',
         });
 
-        if (!response.ok) {
+        if (!videoResponse.ok) {
           throw new Error('Failed to fetch videos');
         }
 
-        const data = await response.json();
-        setVideoCount(data.data.videos.length);
+        const videoData = await videoResponse.json();
+        setVideoCount(videoData.data.videos.length);
+
+        // Fetch logo count
+        const logoResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/logos/`, {
+          credentials: 'include',
+        });
+
+        if (!logoResponse.ok) {
+          throw new Error('Failed to fetch logos');
+        }
+
+        const logoData = await logoResponse.json();
+        setLogoCount(logoData.data.logos.length);
       } catch (err) {
-        setError('Failed to load video count');
-        console.error('Error fetching videos:', err);
+        setError('Failed to load counts');
+        console.error('Error fetching counts:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchVideoCount();
+    fetchCounts();
   }, []);
 
   const handleLogout = () => {
@@ -126,7 +139,7 @@ export default function Dashboard() {
               {/* Quick Actions */}
               <section className="flex flex-col gap-6">
                 <h2 className="text-white text-3xl font-bold leading-tight tracking-[-0.015em]">Quick Actions</h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <div className="group flex flex-col gap-4 rounded-xl border border-white/20 p-6 transition-all duration-300 hover:border-white hover:bg-white/10 hover:shadow-glow bg-gray-900/50">
                     <h3 className="text-lg font-bold text-white">Manage Long Videos</h3>
                     <p className="text-white/70">View and manage your long-form video content</p>
@@ -145,6 +158,16 @@ export default function Dashboard() {
                       className="w-full bg-white hover:bg-white/80 text-black font-medium py-2 px-4 rounded-md transition-colors"
                     >
                       Manage Reels
+                    </button>
+                  </div>
+                  <div className="group flex flex-col gap-4 rounded-xl border border-white/20 p-6 transition-all duration-300 hover:border-white hover:bg-white/10 hover:shadow-glow bg-gray-900/50">
+                    <h3 className="text-lg font-bold text-white">Manage Logos</h3>
+                    <p className="text-white/70">View and manage your logo content</p>
+                    <button
+                      onClick={() => navigate('/see-more/logos')}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                    >
+                      Manage Logos
                     </button>
                   </div>
                 </div>

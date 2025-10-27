@@ -22,7 +22,7 @@ export function AdminProvider({ children }) {
     let mounted = true;
     const verify = async () => {
       const token = localStorage.getItem('adminToken');
-      const apiBase = import.meta.env.VITE_API_URL || '';
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
       if (!token) {
         if (mounted) {
@@ -42,7 +42,7 @@ export function AdminProvider({ children }) {
       }
 
       try {
-        const url = `${apiBase.replace(/\/$/, '')}/admin/verify`;
+        const url = `${apiBase.replace(/\/$/, '')}/api/v1/admin/verify`;
         const res = await fetch(url, {
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
