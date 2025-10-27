@@ -32,6 +32,13 @@ const uploadOnCloudinary = async (localFilePath) => {
 
     console.log("Cloudinary upload response:", response);
 
+    // Ensure the URL is HTTPS
+    if (response.secure_url) {
+      response.url = response.secure_url;
+    } else if (response.url && response.url.startsWith('http://')) {
+      response.url = response.url.replace('http://', 'https://');
+    }
+
     // Delete the local file after successful upload
     fs.unlinkSync(localFilePath);
     return response;
