@@ -24,12 +24,12 @@ const uploadOnCloudinary = async (localFilePath) => {
       return null;
     }
 
-
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
+      secure: true, // Force HTTPS URLs
     });
 
-
+    console.log("Cloudinary upload response:", response);
 
     // Delete the local file after successful upload
     fs.unlinkSync(localFilePath);
