@@ -15,7 +15,8 @@ export default function SeeMoreLogos() {
     const fetchLogos = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/logos/`, {
-          credentials: 'include',
+            method: 'GET',
+            credentials: 'include',
         });
         if (!response.ok) throw new Error('Failed to fetch logos');
 

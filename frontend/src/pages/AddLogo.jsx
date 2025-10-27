@@ -30,35 +30,49 @@ export default function AddLogo() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  e.preventDefault();
+  setLoading(true);
+  setError(null);
 
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('logoFile', formData.logoFile);
+  try {
+    const formDataToSend = new FormData();
+    formDataToSend.append('logoFile', formData.logoFile);
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/logos/upload`, {
+    const token = localStorage.getItem('adminToken');
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/logos/upload`,
+      {
         method: 'POST',
-        credentials: 'include',
-        body: formDataToSend
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to upload logo');
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formDataToSend,
       }
+    );
 
-      const data = await response.json();
-      alert('Logo uploaded successfully!');
-      navigate('/dashboard');
-    } catch (err) {
-      setError(err.message);
-      console.error('Error uploading logo:', err);
-    } finally {
-      setLoading(false);
+    if (response.status === 401) {
+      alert('Session expired. Please log in again.');
+      localStorage.removeItem('adminToken');
+      navigate('/admin/login');
+      return;
     }
-  };
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to upload logo');
+    }
+
+    alert('Logo uploaded successfully!');
+    navigate('/dashboard');
+  } catch (err) {
+    setError(err.message);
+    console.error('Error uploading logo:', err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleBack = () => {
     navigate('/dashboard');

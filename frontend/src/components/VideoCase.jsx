@@ -9,7 +9,10 @@ export default function AutoVideoScroll() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/published`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/published`,{
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch videos');
         }

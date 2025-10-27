@@ -1,17 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-/**
- * AdminContext provides:
- *  - isAdmin: boolean
- *  - loading: boolean (while verifying token)
- *  - login(token) : store token and mark admin
- *  - logout() : remove token and mark not admin
- *
- * By default if REACT_APP_API_URL is set this context will try to verify
- * the token against `${REACT_APP_API_URL}/admin/verify` with Authorization: Bearer <token>.
- * If no API URL is configured the presence of adminToken in localStorage is treated as "logged-in".
- */
-
 const AdminContext = createContext(null);
 
 export function AdminProvider({ children }) {
@@ -20,6 +8,7 @@ export function AdminProvider({ children }) {
 
   useEffect(() => {
     let mounted = true;
+
     const verify = async () => {
       const token = localStorage.getItem('adminToken');
       const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -32,23 +21,22 @@ export function AdminProvider({ children }) {
         return;
       }
 
-      // If no API provided, assume token presence means admin (useful for local/dev)
-      if (!apiBase) {
-        if (mounted) {
-          setIsAdmin(true);
-          setLoading(false);
-        }
-        return;
-      }
-
       try {
         const url = `${apiBase.replace(/\/$/, '')}/api/v1/admin/verify`;
         const res = await fetch(url, {
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include', // ✅ Important for cross-origin cookie handling
         });
 
-        if (mounted) setIsAdmin(res.ok);
+        if (!mounted) return;
+
+        if (res.ok) {
+          const data = await res.json();
+          setIsAdmin(data?.success ?? true); // fallback to true if success field missing
+        } else {
+          setIsAdmin(false);
+        }
       } catch (err) {
         if (mounted) setIsAdmin(false);
       } finally {
@@ -62,7 +50,7 @@ export function AdminProvider({ children }) {
     };
   }, []);
 
-  const login = async (token, { persist = true } = {}) => {
+  const login = (token, { persist = true } = {}) => {
     if (persist) localStorage.setItem('adminToken', token);
     setIsAdmin(true);
   };
@@ -86,4 +74,3 @@ export function useAdmin() {
   }
   return ctx;
 }
-

@@ -9,7 +9,10 @@ export default function Clients() {
   useEffect(() => {
     const fetchLogos = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/logos/published`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/logos/published`,{
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch logos');
         }

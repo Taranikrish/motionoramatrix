@@ -20,7 +20,10 @@ export default function SeeMore() {
             ? `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/see-more/videos`
             : `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/see-more/reels`;
 
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint,{
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) throw new Error('Failed to fetch videos');
 
         const data = await response.json();

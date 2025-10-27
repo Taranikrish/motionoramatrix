@@ -43,58 +43,69 @@ export default function AddVideo() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setSuccess('');
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  setSuccess('');
 
-    if (!formData.videoFile) {
-      setError('Please select a video file');
-      setLoading(false);
-      return;
-    }
+  if (!formData.videoFile) {
+    setError('Please select a video file');
+    setLoading(false);
+    return;
+  }
 
-    if (!formData.title.trim()) {
-      setError('Please enter a title');
-      setLoading(false);
-      return;
-    }
+  if (!formData.title.trim()) {
+    setError('Please enter a title');
+    setLoading(false);
+    return;
+  }
 
-    try {
-      const uploadData = new FormData();
-      uploadData.append('videoFile', formData.videoFile);
-      uploadData.append('title', formData.title);
+  try {
+    const uploadData = new FormData();
+    uploadData.append('videoFile', formData.videoFile);
+    uploadData.append('title', formData.title);
+    uploadData.append('type', formData.isReel ? 'reel' : 'video');
 
-      uploadData.append('type', formData.isReel ? 'reel' : 'video');
+    const token = localStorage.getItem('adminToken'); // ✅ Get JWT
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/upload`, {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/upload`,
+      {
         method: 'POST',
-        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ Add header for backend verifyJWT
+        },
         body: uploadData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Upload failed');
       }
+    );
 
-      setSuccess('Video uploaded successfully!');
-      // Reset form
-      setFormData({
-        title: '',
-        description: '',
-        isReel: false,
-        videoFile: null
-      });
-      // Reset file input
-      document.getElementById('videoFile').value = '';
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (response.status === 401) {
+      alert('Session expired. Please log in again.');
+      localStorage.removeItem('adminToken');
+      navigate('/admin/login');
+      return;
     }
-  };
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Upload failed');
+    }
+
+    setSuccess('Video uploaded successfully!');
+    setFormData({
+      title: '',
+      isReel: false,
+      videoFile: null,
+    });
+    document.getElementById('videoFile').value = '';
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleBack = () => {
     navigate('/dashboard');

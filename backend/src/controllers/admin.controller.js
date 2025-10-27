@@ -55,8 +55,8 @@ const loginAdmin=asyncHandler(async (req,res)=>{
 
     const options={
         httpOnly:true,
-        secure:process.env.NODE_ENV==="production",
-        sameSite: process.env.NODE_ENV === "production" ? 'strict' : 'lax'
+        secure:true,
+        sameSite:"none"
     }
 
         return res
@@ -98,8 +98,8 @@ const refreshAccessToken=asyncHandler(async (req, res) => {
 
         const options={
             httpOnly:true,
-            secure:process.env.NODE_ENV==="production",
-            sameSite: process.env.NODE_ENV === "production" ? 'strict' : 'lax'
+            secure:true,
+            sameSite: "none"
         }
 
         const {accessToken,refreshToken:newRefreshToken}=
@@ -134,8 +134,8 @@ const logoutAdmin=asyncHandler(async (req, res) => {
         })
     const options={
         httpOnly:true,
-        secure:process.env.NODE_ENV==="production",
-        sameSite: process.env.NODE_ENV === "production" ? 'strict' : 'lax'
+        secure:true,
+        sameSite: "none"
     }
     return res
             .status(200)

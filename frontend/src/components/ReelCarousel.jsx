@@ -10,7 +10,10 @@ export default function ReelCarousel() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/reels`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/videos/reels`,{
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) throw new Error("Failed to fetch videos");
         const data = await response.json();
         setVideos(data.data.videos || []);
