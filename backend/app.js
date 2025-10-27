@@ -8,7 +8,7 @@ const app=express();
 
 
 app.use(cors({
-    origin: ["https://motionoramatrix.in", "http://localhost:5173", "http://localhost:3000"],
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
     credentials:true
 }))
 
