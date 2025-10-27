@@ -11,7 +11,8 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://motionoramatrix.netlify.app",
-    "https://motionoramatrix.in"
+    "https://motionoramatrix.in",
+    "https://motionoramatrix.onrender.com"
   ],
   credentials: true,
 }));
