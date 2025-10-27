@@ -8,7 +8,7 @@ const app=express();
 
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173"||"motionoramatrix.netlify.app",
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173"||"https://motionoramatrix.netlify.app",
     credentials:true
 }))
 
