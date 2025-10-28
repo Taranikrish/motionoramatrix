@@ -22,7 +22,7 @@ export default function About() {
               {/* Media Frame */}
               <section className="flex justify-center">
                 <div className="relative w-full max-w-lg rounded-xl p-1.5 border border-primary/30 shadow-[0_0_30px_-5px_theme(colors.primary)]">
-                  <img className="w-full rounded-lg aspect-video object-contain" alt="Motionora Matrix logo" src="/mm png.png" />
+                  <img className="w-full rounded-lg aspect-video object-contain" alt="Motionora Matrix logo" src="/mm2 png.png" />
                 </div>
               </section>
               {/* Typography Block */}
