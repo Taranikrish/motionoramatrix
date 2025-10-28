@@ -26,7 +26,7 @@ export default function NavBar() {
       <div className="bg-transparent flex justify-between items-center p-4 w-full shadow-md absolute z-50">
         <div className="flex-1">
           <img
-            src="/mm png.png"
+            src="/mm2 png.png"
             alt="logo"
             className="h-14 w-28 md:h-20 md:w-40 md:ml-14"
           />
