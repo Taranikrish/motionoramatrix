@@ -65,6 +65,15 @@ const getAllReelsForSeeMore = asyncHandler(async (req, res) => {
     );
 })
 
+const escapeHTML = (str) => {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+};
+
 const UploadVideo = asyncHandler(async (req, res) => {
     // Check video limit (max 20 videos)
     const totalVideos = await Video.countDocuments();
@@ -99,10 +108,13 @@ const UploadVideo = asyncHandler(async (req, res) => {
 
     console.log("Cloudinary upload response:", videoFile);
 
+    // Escape any HTML in title to prevent Stored XSS
+    const sanitizedTitle = escapeHTML(title.trim());
+
     // Create video document
     const video = await Video.create({
         videoFile: videoFile.url,
-        title: title.trim(),
+        title: sanitizedTitle,
         isreel: type.toLowerCase() === "reel",
         isPublished: false // Default to unpublished
     });
@@ -128,7 +140,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
 
     // Delete video file from Cloudinary
     const publicId = video.videoFile.split('/').pop().split('.')[0]; // Extract public ID from URL
-    await deleteFromCloudinary(publicId);
+    await deleteFromCloudinary(publicId, "video");
 
     // Delete video from database
     await Video.findByIdAndDelete(videoId);

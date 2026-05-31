@@ -5,7 +5,11 @@ import bcrypt from "bcryptjs";
 
 const connectDB = async () => {
     try {
-        const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URL}/${DB_NAME}`)
+        let dbUrl = process.env.MONGODB_URL || "";
+        if (dbUrl.endsWith("/")) {
+            dbUrl = dbUrl.slice(0, -1);
+        }
+        const connectionInstance = await mongoose.connect(`${dbUrl}/${DB_NAME}`)
 
 
 
