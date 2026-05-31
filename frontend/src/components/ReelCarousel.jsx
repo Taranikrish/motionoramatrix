@@ -131,9 +131,13 @@ export default function ReelCarousel() {
                   src={video.videoFile}
                   muted
                   playsInline
+                  preload={isFront ? "auto" : "none"}
                   loop={false}
                   onEnded={isFront ? handleVideoEnd : undefined}
-                  className="w-full h-[60%] object-contain"
+                  className="w-full h-[60%] object-contain rounded-xl"
+                  style={{
+                    pointerEvents: isFront ? "auto" : "none"
+                  }}
                 />
               </div>
             );
